@@ -16,6 +16,9 @@ var_dump($ta->getTextFormatted());
 var_dump($ta->getTextAnalyse());
 ```
 
+
+![Test spam analyzer](https://github.com/alytvynov/php-spam-analyzer/blob/master/doc/img-1.png)
+
 ### Colors html
 To change the html replacement you can find constants : 
 ```php
