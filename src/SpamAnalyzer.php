@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace Ltv\Service;
 
 /**
- * Class processResultr
- *
  * @author Anton LYTVYNOV <lytvynov.anton@gmail.com>
  * @link   https://www.linkedin.com/in/anton-lytvynov/
  */
@@ -113,7 +111,7 @@ class SpamAnalyzer
     /**
      * @param string $key
      *
-     * @return array
+     * @return string
      */
     public function getHtmlFormatByKey(string $key): string
     {
