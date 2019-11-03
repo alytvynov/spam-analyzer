@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ltv\Service;
 
 /**
- * Class TextAnalyser
+ * Class processResultr
  *
  * @author Anton LYTVYNOV <lytvynov.anton@gmail.com>
  * @link   https://www.linkedin.com/in/anton-lytvynov/
@@ -17,108 +18,117 @@ class SpamAnalyzer
     const HTML_FORMAT_SERVICES_WORDS   = '<blue>%s</blue>';
     const HTML_FORMAT_ACTIVITIES_WORDS = '<green>%s</green>';
 
-    /**
-     * @var string
-     */
-    public $textInitial;
+    const KEY_INSULT_WORDS     = 'insults';
+    const KEY_RACIST_WORDS     = 'racists';
+    const KEY_ALERT_WORDS      = 'alerts';
+    const KEY_SERVICES_WORDS   = 'services';
+    const KEY_ACTIVITIES_WORDS = 'activities';
+
+    const MAPPING = [
+        self::KEY_INSULT_WORDS     => self::HTML_FORMAT_INSULT_WORDS,
+        self::KEY_RACIST_WORDS     => self::HTML_FORMAT_RACIST_WORDS,
+        self::KEY_ALERT_WORDS      => self::HTML_FORMAT_ALERT_WORDS,
+        self::KEY_SERVICES_WORDS   => self::HTML_FORMAT_SERVICES_WORDS,
+        self::KEY_ACTIVITIES_WORDS => self::HTML_FORMAT_ACTIVITIES_WORDS,
+    ];
 
     /**
      * @var string
      */
-    public $textFormatted;
+    private $input;
+
+    /**
+     * @var string
+     */
+    private $output;
 
     /**
      * @var array
      */
-    public $textAnalyse = [];
+    private $processResult;
 
     /**
      * @var array
      */
-    public $insultsWords = ['con', 'cons', 'connard', 'connards', 'salope', 'salopes', 'enculé', 'enculés', 'pd', 'pds'];
+    private $badWords = [
+        self::KEY_INSULT_WORDS     => ['con', 'cons', 'connard', 'connards', 'salope', 'salopes', 'enculé', 'enculés', 'pd', 'pds',],
+        self::KEY_RACIST_WORDS     => ['gitan', 'arabe', 'rital',],
+        self::KEY_ALERT_WORDS      => ['tente', 'tentes', 'caravane', 'caravanes', 'interdit', 'illégal',],
+        self::KEY_SERVICES_WORDS   => ['wifi', '4g', 'eau', 'services',],
+        self::KEY_ACTIVITIES_WORDS => ['escalade', 'moto', 'rando',],
+    ];
 
     /**
-     * @var array
+     * @param string $input
      */
-    public $racistWords = ['gitan', 'arabe', 'rital'];
-
-    /**
-     * @var array
-     */
-    public $alertWords = ['tente', 'tentes', 'caravane', 'caravanes', 'interdit', 'illégal'];
-
-    /**
-     * @var array
-     */
-    public $servicesWords = ['wifi', '4g', 'eau', 'services'];
-
-    /**
-     * @var array
-     */
-    public $activitiesWords = ['escalade', 'moto', 'rando'];
-
-    /**
-     * @param string $textInitial
-     */
-    public function __construct(string $textInitial = '')
+    public function __construct(string $input = null)
     {
         $this->clear();
-        $this->textInitial = $textInitial;
+        $this->input = $input;
     }
 
     /**
-     * @param string $textInitial
+     * @param string $input
      *
      * @return $this
      */
-    public function setTextInitial(string $textInitial)
+    public function setInput(string $input)
     {
         $this->clear();
-        $this->textInitial = $textInitial;
+        $this->input = $input;
 
         return $this;
     }
 
     private function clear(): void
     {
-        $this->textFormatted = '';
-        $this->textAnalyse   = [];
+        $this->output        = null;
+        $this->processResult = [];
     }
 
     /**
      * @return string
      */
-    public function getTextInitial(): string
+    public function getInput(): string
     {
-        return $this->textInitial;
+        return $this->input;
     }
 
     /**
      * @return string
      */
-    public function getTextFormatted(): string
+    public function getOutput(): string
     {
-        return $this->textFormatted;
+        return $this->output;
     }
 
     /**
      * @return array
      */
-    public function getTextAnalyse(): array
+    public function getProcessResult(): array
     {
-        return $this->textAnalyse;
+        return $this->processResult;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return array
+     */
+    public function getHtmlFormatByKey(string $key): string
+    {
+        return self::MAPPING[$key];
     }
 
     public function process()
     {
-        $this->textFormatted = $this->textInitial;
+        $this->output = $this->input;
 
-        $this->textAnalyse['insultsWords']    = $this->findWords($this->insultsWords, self::HTML_FORMAT_INSULT_WORDS);
-        $this->textAnalyse['racistWords']     = $this->findWords($this->racistWords, self::HTML_FORMAT_RACIST_WORDS);
-        $this->textAnalyse['alertWords']      = $this->findWords($this->alertWords, self::HTML_FORMAT_ALERT_WORDS);
-        $this->textAnalyse['servicesWords']   = $this->findWords($this->servicesWords, self::HTML_FORMAT_SERVICES_WORDS);
-        $this->textAnalyse['activitiesWords'] = $this->findWords($this->activitiesWords, self::HTML_FORMAT_ACTIVITIES_WORDS);
-        $this->textAnalyse                    = array_filter($this->textAnalyse);
+        foreach ($this->badWords as $key => $words) {
+            $this->processResult[$key] = $this->findWords($words, $this->getHtmlFormatByKey($key));
+        }
+
+        $this->processResult = array_filter($this->processResult);
 
         return $this;
     }
@@ -135,9 +145,9 @@ class SpamAnalyzer
         foreach ($keyWords as $word) {
             $regular = sprintf("/\b%s\b/i", $word);
             $html    = sprintf($replaceHtmlFormat, $word);
-            if (preg_match($regular, $this->textFormatted)) {
-                $words[]             = $word;
-                $this->textFormatted = preg_replace($regular, $html, $this->textFormatted);
+            if (preg_match($regular, $this->output)) {
+                $words[]      = $word;
+                $this->output = preg_replace($regular, $html, $this->output);
             }
         }
 
