@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Ltv\Service;
-
 /**
  * @author Anton LYTVYNOV <lytvynov.anton@gmail.com>
- * @link   https://www.linkedin.com/in/anton-lytvynov/
+ * @link   https://lytvynov-anton.com
  */
+
+namespace Ltv\Service;
+
 class SpamAnalyzer
 {
 
@@ -132,7 +133,7 @@ class SpamAnalyzer
     }
 
     /**
-     * @param array $keyWords
+     * @param array  $keyWords
      * @param string $replaceHtmlFormat
      *
      * @return array
