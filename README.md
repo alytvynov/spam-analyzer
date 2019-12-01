@@ -1,25 +1,48 @@
-# Text Analyser
+# Spam Analyser
        
-To use : `SpamAnalyser.php`     
+Use : `SpamAnalyser.php`     
 
-Example : 
+### How to use
+
 ```php
 use Ltv\Service\SpamAnalyzer;
 
-$text = 'Super camping mais le patron est un vrai con. Dommage que la Wifi est constante et d'un bon débit';
-
-$spamAnalyzer = new SpamAnalyzer();
-$spamAnalyzer->setInput($text1)->process();
-
-var_dump($ta->getInput());
-var_dump($ta->getOutput());
-var_dump($ta->getProcessResult());
+$text = 'Il est con, non ? détenté +33 6 60 58 74 74 conçue con some@gmail.com first.com second.org Con lorem ipsum';
+$spamAnalyzer = (new SpamAnalyzer($text))->process();
 ```
 
+##### Output
+```php
+$ta->getOutput();
+```
+```
+'Il est <red>con</red>, non ? détenté <phone>+33 6 60 58 74 74</phone> conçue <red>con</red> <email>some@gmail.com</email> <site>first.com</site> <site>second.org</site> <red>con</red> lorem ipsum',
+```
 
-![Test spam analyzer](https://github.com/alytvynov/php-spam-analyzer/blob/master/doc/img-1.png)
+##### Process result
+```php
+$spamAnalyzer->getProcessResult()
+```
+```
+[
+    "insults" => [
+        0 => "con"
+    ],
+    "emails"  => [
+        0 => "some@gmail.com"
+    ],
+    "phones"  => [
+        0 => "+33 6 60 58 74 74"
+    ],
+    "sites"   => [
+        0 => "first.com",
+        1 => "second.org"
+    ]
+];
+```
 
 ### Colors html
+##### Default html
 To change the html replacement you can find constants 
 ```php
 const HTML_FORMAT_INSULT_WORDS     = '<red>%s</red>';
@@ -35,12 +58,29 @@ const MAPPING = [
     ...
 ```
 
-You can just edit this constants to change html replacement but don't miss `%s`. It's important.
+##### Bad words can be set by
+```
+$spamAnalyzer = (new SpamAnalyzer($text))
+    ->setBadWords(
+        [
+            'words' => [
+                'grey water', 
+                'showers', 
+                'water', 
+                'dog',
+            ],
+        ]
+    )->process();
+```
 
-### Regards
-Feel free to contact me for any questions of for further work
+### Tests 
+```
+composer install #install php unit dependencies
+./vendor/bin/phpunit  --verbose --bootstrap  vendor/autoload.php tests;
+```
+
+### Contacts
 * Anton LYTVYNOV
 * [LinkedIn](https://www.linkedin.com/in/anton-lytvynov/)
+* [Site ](http://lytvynov-anton.com/)
 * lytvynov.anton@gmail.com
-
-### Licence MIT

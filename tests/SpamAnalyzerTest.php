@@ -566,8 +566,7 @@ final class SpamAnalyzerTest extends TestCase
     public function testLargeProcessText()
     {
         $text         = 'Il est con, non ? détenté +33 6 60 58 74 74 conçue con some@gmail.com first.com second.org Con lorem ipsum';
-        $spamAnalyzer = (new SpamAnalyzer($text))
-            ->process();
+        $spamAnalyzer = (new SpamAnalyzer($text))->process();
 
         $this->assertEquals(
             [

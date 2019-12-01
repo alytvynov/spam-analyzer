@@ -1,16 +1,15 @@
 {
   "name": "ltv/spam-analyzer",
-  "description": "Php spam analyzer",
+  "description": "Spam analyzer",
   "type": "package",
   "require": {
     "php": ">=7.2.0"
   },
-  "license": "mit",
   "authors": [
     {
       "name": "Anton Lytvynov",
       "email": "lytvynov.anton@gmail.com",
-      "homepage": "http://lytvynov-anton.com"
+      "homepage": "https://lytvynov-anton.com"
     }
   ],
   "minimum-stability": "dev",
