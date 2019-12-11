@@ -21,11 +21,11 @@ class SpamAnalyzer
     const HTML_FORMAT_EMAIL            = '<email>%s</email>';
     const HTML_FORMAT_SITE             = '<site>%s</site>';
 
-    const KEY_INSULT_WORDS     = 'insults';
-    const KEY_RACIST_WORDS     = 'racists';
-    const KEY_ALERT_WORDS      = 'alerts';
-    const KEY_SERVICES_WORDS   = 'services';
-    const KEY_ACTIVITIES_WORDS = 'activities';
+    const KEY_INSULT_WORDS     = 'insults_words';
+    const KEY_RACIST_WORDS     = 'racist_words';
+    const KEY_ALERT_WORDS      = 'alert_words';
+    const KEY_SERVICES_WORDS   = 'services_words';
+    const KEY_ACTIVITIES_WORDS = 'activities_words';
 
     const KEY_PHONES = 'phones';
     const KEY_EMAILS = 'emails';
@@ -263,12 +263,6 @@ class SpamAnalyzer
         return $beginning . $wordHtml . $end;
     }
 
-    /**
-     * @param string $text
-     * @param string $word
-     *
-     * @return array
-     */
     public function getMatchesForWord(string $text, string $word): array
     {
         preg_match_all($this->getRegularForWord($word), $text, $matches, PREG_OFFSET_CAPTURE);
@@ -277,12 +271,6 @@ class SpamAnalyzer
         return $data;
     }
 
-    /**
-     * @param int         $offset
-     * @param string|null $text
-     *
-     * @return bool
-     */
     public function isWordAlreadyReplaced(string $text, int $offset)
     {
         return $this->isHtmlOnTheLeftSide($text, $offset) &&
@@ -303,12 +291,6 @@ class SpamAnalyzer
         }
     }
 
-    /**
-     * @param string $text
-     * @param int    $offset
-     *
-     * @return bool
-     */
     public function isHtmlOnTheRightSide(string $text, int $offset): bool
     {
         $posClosed = strpos($text, '</', $offset);
@@ -329,11 +311,6 @@ class SpamAnalyzer
         }
     }
 
-    /**
-     * @param string $word
-     *
-     * @return string
-     */
     public function getRegularForWord(string $word): string
     {
         return sprintf("/\b%s\b/ui", $word);

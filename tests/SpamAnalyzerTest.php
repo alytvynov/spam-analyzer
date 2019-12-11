@@ -43,7 +43,7 @@ final class SpamAnalyzerTest extends TestCase
         );
 
         $this->assertEquals(
-            ['insults' => ['con'], 'services' => ['wifi']],
+            ['insults_words' => ['con'], 'services_words' => ['wifi']],
             $spamAnalyzer->getProcessResult()
         );
     }
@@ -65,8 +65,8 @@ final class SpamAnalyzerTest extends TestCase
 
         $this->assertEquals(
             [
-                'racists'    => ['rital',],
-                'activities' => ['rando'],
+                'racist_words'     => ['rital',],
+                'activities_words' => ['rando'],
 
             ],
             $spamAnalyzer->getProcessResult()
@@ -111,11 +111,11 @@ final class SpamAnalyzerTest extends TestCase
 
         $this->assertEquals(
             [
-                'alerts'   => [
+                'alert_words'    => [
                     'tente',
                     'interdit'
                 ],
-                'services' => [
+                'services_words' => [
                     '4g'
                 ]
             ],
@@ -140,7 +140,7 @@ final class SpamAnalyzerTest extends TestCase
 
         $this->assertEquals(
             [
-                'insults' => [
+                'insults_words' => [
                     'con'
                 ],
             ],
@@ -570,16 +570,16 @@ final class SpamAnalyzerTest extends TestCase
 
         $this->assertEquals(
             [
-                "insults" => [
+                "insults_words" => [
                     0 => "con"
                 ],
-                "emails"  => [
+                "emails"        => [
                     0 => "some@gmail.com"
                 ],
-                "phones"  => [
+                "phones"        => [
                     0 => "+33 6 60 58 74 74"
                 ],
-                "sites"   => [
+                "sites"         => [
                     0 => "first.com",
                     1 => "second.org"
                 ]
