@@ -1,11 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * @author Anton LYTVYNOV <lytvynov.anton@gmail.com>
- * @link   https://lytvynov-anton.com
- */
-
 namespace Ltv\Service;
 
 class SpamAnalyzer
@@ -26,10 +21,9 @@ class SpamAnalyzer
     const KEY_ALERT_WORDS      = 'alert_words';
     const KEY_SERVICES_WORDS   = 'services_words';
     const KEY_ACTIVITIES_WORDS = 'activities_words';
-
-    const KEY_PHONES = 'phones';
-    const KEY_EMAILS = 'emails';
-    const KEY_SITES  = 'sites';
+    const KEY_PHONES           = 'phones';
+    const KEY_EMAILS           = 'emails';
+    const KEY_SITES            = 'sites';
 
     const MAPPING = [
         self::KEY_INSULT_WORDS     => self::HTML_FORMAT_INSULT_WORDS,
@@ -84,20 +78,12 @@ class SpamAnalyzer
         self::KEY_ACTIVITIES_WORDS => ['escalade', 'moto', 'rando',],
     ];
 
-    /**
-     * @param string $input
-     */
     public function __construct(string $input = null)
     {
         $this->input = $input;
         $this->clear();
     }
 
-    /**
-     * @param string $input
-     *
-     * @return $this
-     */
     public function setInput(string $input): SpamAnalyzer
     {
         $this->input = $input;
@@ -106,11 +92,6 @@ class SpamAnalyzer
         return $this;
     }
 
-    /**
-     * @param array $badWords
-     *
-     * @return SpamAnalyzer
-     */
     public function setBadWords(array $badWords): SpamAnalyzer
     {
         $this->badWords = $badWords;
@@ -124,35 +105,21 @@ class SpamAnalyzer
         $this->processResult = [];
     }
 
-    /**
-     * @return string
-     */
     public function getInput(): string
     {
         return $this->input;
     }
 
-    /**
-     * @return string
-     */
     public function getOutput(): string
     {
         return $this->output;
     }
 
-    /**
-     * @return array
-     */
     public function getProcessResult(): array
     {
         return $this->processResult;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
     public function getHtmlFormatByKey(string $key): string
     {
         return self::MAPPING[$key] ?? self::HTML_FORMAT_DEFAULT;
@@ -316,7 +283,7 @@ class SpamAnalyzer
         return sprintf("/\b%s\b/ui", $word);
     }
 
-    public function getEmailMatches()
+    public function getEmailMatches(): ?array
     {
         $pattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
         preg_match_all($pattern, $this->output, $matches);
@@ -325,7 +292,7 @@ class SpamAnalyzer
         return $emailMatches;
     }
 
-    public function getPhoneMatches()
+    public function getPhoneMatches(): ?array
     {
         $pattern = '/(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})/';
 
@@ -335,7 +302,7 @@ class SpamAnalyzer
         return $phoneMatches;
     }
 
-    public function getSiteMatches()
+    public function getSiteMatches(): ?array
     {
         $sites = [];
 

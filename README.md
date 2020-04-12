@@ -1,8 +1,13 @@
 # Spam Analyser
-       
-Use : `SpamAnalyser.php`     
+### What is it ? 
+Spam Analyzer allows you to detect and replace 
+- bad words
+- email
+- sites
+- phone numbers
 
 ### How to use
+Use : `SpamAnalyser.php`     
 
 ```php
 use Ltv\Service\SpamAnalyzer;
