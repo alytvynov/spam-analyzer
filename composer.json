@@ -1,5 +1,6 @@
 {
   "name": "ltv/spam-analyzer",
+  "license": "MIT",
   "description": "Spam analyzer",
   "type": "package",
   "require": {
@@ -22,5 +23,8 @@
   "require-dev": {
     "phpunit/phpunit": "^7",
     "symfony/var-dumper": "^5.1@dev"
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit  --verbose --bootstrap  vendor/autoload.php tests;"
   }
 }
