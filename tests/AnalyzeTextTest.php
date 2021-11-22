@@ -46,27 +46,5 @@ final class AnalyzeTextTest extends TestCase
             'Il est <tred>con</tred>, non ? détenté <torange>+33 6 60 58 74 74</torange> conçue <tred>con</tred> <torange>some@gmail.com</torange> <torange>first.com</torange> <torange>second.org</torange> <tred>con</tred> lorem ipsum',
             $analyseText->text_formatted
         );
-
-        /*
-        $this->assertEquals(
-            [
-                "insults_words" => [
-                    0 => "con"
-                ],
-                "emails"        => [
-                    0 => "some@gmail.com"
-                ],
-                "phones"        => [
-                    0 => "+33 6 60 58 74 74"
-                ],
-                "sites"         => [
-                    0 => "first.com",
-                    1 => "second.org"
-                ]
-            ],
-            $spamAnalyzer->getProcessResult()
-        );
-        */
-
     }
 }

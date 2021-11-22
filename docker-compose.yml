@@ -1,0 +1,16 @@
+version: '3.3'
+
+networks:
+    spam-analyzer:
+
+services:
+    php_spam_analyzer:
+        container_name: php_spam-analyzer
+        build:
+            context: ./docker/php
+        ports:
+            - '9000:9000'
+        volumes:
+            - ${PWD}/:/var/www/app
+        networks:
+            - spam-analyzer

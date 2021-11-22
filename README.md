@@ -1,6 +1,22 @@
 # Spam Analyser
-### What is it ? 
-Spam Analyzer allows you to detect and replace 
+
+## Install
+```bash
+git clone https://github.com/alytvynov/spam-analyzer
+cd spam-analyzer
+```
+### With Docker
+```bash
+docker-compose up -d
+docker exec -it php_spam-analyzer bash -c "composer install"
+```
+### Without Docker
+```bash
+composer install
+```
+
+### What is Spam Analyzer ? 
+Spam Analyzer is a simple class that allows you to detect and replace 
 - bad words
 - email
 - sites
@@ -79,7 +95,7 @@ $spamAnalyzer = (new SpamAnalyzer($text))
 ```
 
 ### Tests 
-```
+```bash
 composer install #install php unit dependencies
 ./vendor/bin/phpunit  --verbose --bootstrap  vendor/autoload.php tests;
 ```
